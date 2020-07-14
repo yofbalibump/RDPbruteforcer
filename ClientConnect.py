@@ -10,7 +10,7 @@ from OpenSSL import SSL, crypto
 
 
 #Function connecting to a legitimate RDP server. Returns the ssl socket of the connection
-def clientConnect(host, username, password, domain, connect = True):
+def clientConnect(host, port, username, password, domain, connect = True):
     tpkt = TPKT()
     tpdu = TPDU()
     rdp_neg = RDP_NEG_REQ()
@@ -21,7 +21,7 @@ def clientConnect(host, username, password, domain, connect = True):
     tpkt['TPDU'] = tpdu.getData()
 
     s = socket.socket()
-    s.connect((host,3389))
+    s.connect((host,port))
     s.sendall(tpkt.getData())
     pkt = s.recv(8192)
     tpkt.fromString(pkt)
