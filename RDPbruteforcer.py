@@ -23,7 +23,7 @@ class RDPBruteForcer():
         requiredArgs = parser.add_argument_group('Required Arguments')
         requiredArgs.add_argument('-I', dest = 'targetIP', action = "store",required=True,  help= "Target IP Address")
         requiredArgs.add_argument('-U', dest = 'UsernamesFile', action ="store",required=True,   help='Usernames file')
-        requiredArgs.add_argument('-P', dest = 'PasswordsFile', action ="store", help="Password file")
+        requiredArgs.add_argument('-P', dest = 'PasswordsFile', action ="store", help="Passwords file")
         requiredArgs.add_argument('-t', dest = 'threads', action = "store", type=int, default=10, help= "Amount of threads")
         requiredArgs.add_argument('-d', dest = 'Domain', action = "store",type=str, default="", help='Domain Default:""')
         requiredArgs.add_argument('-p', dest = 'targetPort', action = "store",type=int, default=3389, help='Target Port Default:3389')
