@@ -8,6 +8,7 @@ optional arguments:
 
 Required Arguments:
   -I TARGETIP       Target IP Address
+  -p PORT           Target Port Default:3389
   -U USERNAMESFILE  Usernames file
   -P PASSWORDSFILE  Password file
   -t THREADS        Amount of threads

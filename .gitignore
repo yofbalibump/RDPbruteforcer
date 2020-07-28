@@ -1,0 +1,6 @@
+# ignore pyc
+*.pyc
+
+# do not push your wordlists
+*.txt
+*.lst
