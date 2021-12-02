@@ -41,7 +41,7 @@ class RDPBruteForcer():
         self.timeoutTime = options.timeout
         self.domain = options.Domain
         self.usernames = self.fileToList(options.UsernamesFile)
-        self.uep == options.uep
+        self.uep = options.uep
         if self.uep == "False" :
             self.passwords = self.fileToList(options.PasswordsFile)
         else:
